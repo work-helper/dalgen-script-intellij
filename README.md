@@ -3,6 +3,10 @@
 依托于IDEA database所提供的`Scripted Extensions`功能,所写的代码生成脚本.
 总体逻辑很简单,获取IDEA提供的表结构,然后填充一些模板需要的信息,定位到具体的velocity模板,渲染,写回文件.
 
+Velocity模板信息
+
+![](http://imgblog.mrdear.cn/1540564282.png?imageMogr2/thumbnail/!100p)
+
 ## 使用介绍
 
 使用前建议先看看脚本代码,groovy不是很熟,所以还是用Java风格来写的,很容易看懂
