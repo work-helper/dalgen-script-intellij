@@ -6,27 +6,25 @@ import java.util.Date;
 
 /**
 * A data object class directly models database table
-* tableName:${table.name}
-* tableComment: ${table.comment}
+* table:${table.name}
+* comment: ${table.comment}
 * @author ${author}
 * @since ${now}
 */
 public class ${simpleClassName} {
 
     //========== properties ==========
-
 #foreach($column in $table.columns)
 
     /**
-    * jdbcName: <tt>${column.jdbcName}</tt>.
-    * jdbcComment: <tt>${column.comment}</tt>.
+    * column: <tt>${column.jdbcName}</tt>.
+    * comment: <tt>${column.comment}</tt>.
     */
     private $column.javaType $column.variableName;
 #end
 
-    //========== getters and setters ==========
+//========== getters and setters ==========
 #foreach($column in $table.columns)
-
     /**
     * Getter method for property <tt>$column.variableName</tt>.
     *

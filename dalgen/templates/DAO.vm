@@ -1,14 +1,21 @@
 package ${package};
 
-import com.alipay.ipay.data.bill.dal.log.dataobject.TaskExeLogDO;
-
 import org.apache.ibatis.annotations.Mapper;
+import ${POJO.fullClassName};
+
 
 /**
 * @author ${author}
+* @since ${now}
 */
 @Mapper
 public interface ${simpleClassName} {
 
+    /**
+    * 创建实体
+    * @param insertDO 实体类
+    * @return true成功,主键自动设置到实体中
+    */
+    boolean insert(${POJO.simpleClassName} insertDO);
 
 }

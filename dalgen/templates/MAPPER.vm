@@ -21,4 +21,20 @@
         #end
     </sql>
 
+    <insert id="insert" parameterType="${POJO.fullClassName}" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into ${table.name}
+        <include refid="ALL-COLS"/>
+        values
+        (
+        #foreach($column in $table.columns)
+            #if($velocityCount != $table.columns.size())
+                #{${column.variableName},jdbcType=${column.mybatisType}},
+            #else
+                #{${column.variableName},jdbcType=${column.mybatisType}}
+            #end
+        #end
+        )
+    </insert>
+
 </mapper>
