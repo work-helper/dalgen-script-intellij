@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mrdear.dao.UserDAO">
+
+    <resultMap id="ALL-RESULTMAP" type="cn.mrdear.dataobject.UserDO">
+        <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
+        <result property="username" column="username" javaType="String" jdbcType="VARCHAR"/>
+        <result property="email" column="email" javaType="String" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" javaType="String" jdbcType="CHAR"/>
+        <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
+        <result property="role" column="role" javaType="String" jdbcType="VARCHAR"/>
+        <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+
+
+    <sql id="ALL-COLS">
+                id,
+                username,
+                email,
+                phone,
+                avatar,
+                status,
+                role,
+                gmt_create,
+                gmt_update
+    </sql>
+
+    <insert id="insert" parameterType="cn.mrdear.dataobject.UserDO" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into user
+        <include refid="ALL-COLS"/>
+        values
+        (
+                #{id,jdbcType=INTEGER},
+                #{username,jdbcType=VARCHAR},
+                #{email,jdbcType=VARCHAR},
+                #{phone,jdbcType=CHAR},
+                #{avatar,jdbcType=VARCHAR},
+                #{status,jdbcType=TINYINT},
+                #{role,jdbcType=VARCHAR},
+                #{gmtCreate,jdbcType=TIMESTAMP},
+                #{gmtUpdate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+</mapper>
+

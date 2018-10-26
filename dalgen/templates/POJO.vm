@@ -1,0 +1,56 @@
+package ${package};
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import java.util.Date;
+
+/**
+* A data object class directly models database table
+* tableName:${table.name}
+* tableComment: ${table.comment}
+* @author ${author}
+* @since ${now}
+*/
+public class ${simpleClassName} {
+
+    //========== properties ==========
+
+#foreach($column in $table.columns)
+
+    /**
+    * jdbcName: <tt>${column.jdbcName}</tt>.
+    * jdbcComment: <tt>${column.comment}</tt>.
+    */
+    private $column.javaType $column.variableName;
+#end
+
+    //========== getters and setters ==========
+#foreach($column in $table.columns)
+
+    /**
+    * Getter method for property <tt>$column.variableName</tt>.
+    *
+    * @return property value of $column.variableName
+    */
+    public $column.javaType get${column.capitalizeVariableName}() {
+        return $column.variableName;
+    }
+
+    /**
+    * Setter method for property <tt>$column.variableName</tt>.
+    *
+    * @param $column.variableName value to be assigned to property $column.variableName
+    */
+    public void set${column.capitalizeVariableName}($column.javaType $column.variableName) {
+        this.$column.variableName = $column.variableName;
+    }
+#end
+
+    /**
+    * @see java.lang.Object#toString()
+    */
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+}

@@ -1,0 +1,14 @@
+package ${package};
+
+import com.alipay.ipay.data.bill.dal.log.dataobject.TaskExeLogDO;
+
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* @author ${author}
+*/
+@Mapper
+public interface ${simpleClassName} {
+
+
+}

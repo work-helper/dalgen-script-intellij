@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mrdear.dao.UserAuthDAO">
+
+    <resultMap id="ALL-RESULTMAP" type="cn.mrdear.dataobject.UserAuthDO">
+        <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" javaType="Long" jdbcType="INTEGER"/>
+        <result property="identityType" column="identity_type" javaType="Integer" jdbcType="TINYINT"/>
+        <result property="identifier" column="identifier" javaType="String" jdbcType="VARCHAR"/>
+        <result property="credential" column="credential" javaType="String" jdbcType="VARCHAR"/>
+        <result property="credentialExpire" column="credential_expire" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
+        <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+
+
+    <sql id="ALL-COLS">
+                id,
+                uid,
+                identity_type,
+                identifier,
+                credential,
+                credential_expire,
+                status,
+                gmt_create,
+                gmt_update
+    </sql>
+
+    <insert id="insert" parameterType="cn.mrdear.dataobject.UserAuthDO" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into user_auth
+        <include refid="ALL-COLS"/>
+        values
+        (
+                #{id,jdbcType=INTEGER},
+                #{uid,jdbcType=INTEGER},
+                #{identityType,jdbcType=TINYINT},
+                #{identifier,jdbcType=VARCHAR},
+                #{credential,jdbcType=VARCHAR},
+                #{credentialExpire,jdbcType=TIMESTAMP},
+                #{status,jdbcType=TINYINT},
+                #{gmtCreate,jdbcType=TIMESTAMP},
+                #{gmtUpdate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+</mapper>
+
