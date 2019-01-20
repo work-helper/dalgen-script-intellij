@@ -4,15 +4,15 @@
 <mapper namespace="cn.mrdear.dao.UserDAO">
 
     <resultMap id="ALL-RESULTMAP" type="cn.mrdear.dataobject.UserDO">
-        <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
-        <result property="username" column="username" javaType="String" jdbcType="VARCHAR"/>
-        <result property="email" column="email" javaType="String" jdbcType="VARCHAR"/>
-        <result property="phone" column="phone" javaType="String" jdbcType="CHAR"/>
-        <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
-        <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
-        <result property="role" column="role" javaType="String" jdbcType="VARCHAR"/>
-        <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
+            <result property="username" column="username" javaType="String" jdbcType="VARCHAR"/>
+            <result property="email" column="email" javaType="String" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" javaType="String" jdbcType="CHAR"/>
+            <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
+            <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
+            <result property="role" column="role" javaType="String" jdbcType="VARCHAR"/>
+            <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
 
     </resultMap>
 
@@ -29,23 +29,109 @@
                 gmt_update
     </sql>
 
-    <insert id="insert" parameterType="cn.mrdear.dataobject.UserDO" useGeneratedKeys="true" keyColumn="id"
-            keyProperty="id">
+    <insert id="insertNotNull" parameterType="cn.mrdear.dataobject.UserDO"
+            keyColumn="id" keyProperty="id">
         insert into user
-        <include refid="ALL-COLS"/>
-        values
-        (
-                #{id,jdbcType=INTEGER},
-                #{username,jdbcType=VARCHAR},
-                #{email,jdbcType=VARCHAR},
-                #{phone,jdbcType=CHAR},
-                #{avatar,jdbcType=VARCHAR},
-                #{status,jdbcType=TINYINT},
-                #{role,jdbcType=VARCHAR},
-                #{gmtCreate,jdbcType=TIMESTAMP},
-                #{gmtUpdate,jdbcType=TIMESTAMP}
-        )
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        id,
+                    </if>
+
+                    <if test="username != null">
+                        username,
+                    </if>
+
+                    <if test="email != null">
+                        email,
+                    </if>
+
+                    <if test="phone != null">
+                        phone,
+                    </if>
+
+                    <if test="avatar != null">
+                        avatar,
+                    </if>
+
+                    <if test="status != null">
+                        status,
+                    </if>
+
+                    <if test="role != null">
+                        role,
+                    </if>
+
+                    gmt_create,
+
+                    gmt_update,
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        #{id,jdbcType=INTEGER},
+                    </if>
+                    <if test="username != null">
+                        #{username,jdbcType=VARCHAR},
+                    </if>
+                    <if test="email != null">
+                        #{email,jdbcType=VARCHAR},
+                    </if>
+                    <if test="phone != null">
+                        #{phone,jdbcType=CHAR},
+                    </if>
+                    <if test="avatar != null">
+                        #{avatar,jdbcType=VARCHAR},
+                    </if>
+                    <if test="status != null">
+                        #{status,jdbcType=TINYINT},
+                    </if>
+                    <if test="role != null">
+                        #{role,jdbcType=VARCHAR},
+                    </if>
+                    now(),
+                    now(),
+        </trim>
     </insert>
 
+    <update id="updateNotNull" parameterType="cn.mrdear.dataobject.UserDO">
+        update user
+        <set>
+                    <if test="username != null">
+                        username = #{username,jdbcType=VARCHAR},
+                    </if>
+                    <if test="email != null">
+                        email = #{email,jdbcType=VARCHAR},
+                    </if>
+                    <if test="phone != null">
+                        phone = #{phone,jdbcType=CHAR},
+                    </if>
+                    <if test="avatar != null">
+                        avatar = #{avatar,jdbcType=VARCHAR},
+                    </if>
+                    <if test="status != null">
+                        status = #{status,jdbcType=TINYINT},
+                    </if>
+                    <if test="role != null">
+                        role = #{role,jdbcType=VARCHAR},
+                    </if>
+                    gmt_update = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="queryByIds" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from user
+        where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>
 

@@ -9,7 +9,7 @@ import java.util.Date;
 * table:user_auth
 * comment: 用户授权表
 * @author dalgen
-* @since Fri Oct 26 22:12:54 CST 2018
+* @since Sun Jan 20 15:30:21 CST 2019
 */
 public class UserAuthDO {
 

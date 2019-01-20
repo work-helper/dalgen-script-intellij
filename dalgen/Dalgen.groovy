@@ -130,14 +130,19 @@ def generateFile(localPackage, templateName) {
  */
 def buildCommonContext(table) {
     map = [
-            "author"     : "dalgen",
-            "now"        : new Date(),
-            "rootPackage": mappingDirToPackageRoot(dir),
-            "table"      : [
+            "author"       : "dalgen",
+            "now"          : new Date(),
+            "rootPackage"  : mappingDirToPackageRoot(dir),
+            "table"        : [
                     "name"   : table.name,
                     "comment": table.comment,
                     "columns": calcFields(table)
-            ]
+            ],
+            "defaultColumns": [
+                    "gmt_create": "now()",
+                    "gmt_update": "now()"
+            ],
+            "updateIgnore":["gmt_create","id"]
     ]
 
     return new VelocityContext(map)

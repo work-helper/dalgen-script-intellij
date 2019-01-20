@@ -4,9 +4,9 @@
 <mapper namespace="${DAO.fullClassName}">
 
     <resultMap id="ALL-RESULTMAP" type="${POJO.fullClassName}">
-    #foreach($column in $table.columns)
-        <result property="${column.variableName}" column="${column.jdbcName}" javaType="${column.javaType}" jdbcType="${column.mybatisType}"/>
-    #end
+        #foreach($column in $table.columns)
+            <result property="${column.variableName}" column="${column.jdbcName}" javaType="${column.javaType}" jdbcType="${column.mybatisType}"/>
+        #end
 
     </resultMap>
 
@@ -21,20 +21,63 @@
         #end
     </sql>
 
-    <insert id="insert" parameterType="${POJO.fullClassName}" useGeneratedKeys="true" keyColumn="id"
-            keyProperty="id">
+    <insert id="insertNotNull" parameterType="${POJO.fullClassName}"
+            keyColumn="id" keyProperty="id">
         insert into ${table.name}
-        <include refid="ALL-COLS"/>
-        values
-        (
-        #foreach($column in $table.columns)
-            #if($velocityCount != $table.columns.size())
-                #{${column.variableName},jdbcType=${column.mybatisType}},
-            #else
-                #{${column.variableName},jdbcType=${column.mybatisType}}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #foreach($column in $table.columns)
+                #if($defaultColumns.containsKey($column.jdbcName))
+                    ${column.jdbcName},
+                #else
+                    <if test="${column.variableName} != null">
+                        ${column.jdbcName},
+                    </if>
+                #end
+
             #end
-        #end
-        )
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #foreach($column in $table.columns)
+                #if($defaultColumns.containsKey($column.jdbcName))
+                    ${defaultColumns.get($column.jdbcName)},
+                #else
+                    <if test="${column.variableName} != null">
+                        #{${column.variableName},jdbcType=${column.mybatisType}},
+                    </if>
+                #end
+            #end
+        </trim>
     </insert>
 
+    <update id="updateNotNull" parameterType="${POJO.fullClassName}">
+        update ${table.name}
+        <set>
+            #foreach($column in $table.columns)
+                #if($updateIgnore.contains($column.jdbcName))
+                #elseif($defaultColumns.containsKey($column.jdbcName))
+                    ${column.jdbcName} = ${defaultColumns.get($column.jdbcName)},
+                #else
+                    <if test="${column.variableName} != null">
+                        ${column.jdbcName} = #{${column.variableName},jdbcType=${column.mybatisType}},
+                    </if>
+                #end
+            #end
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from ${table.name}
+        where id = #{id}
+    </select>
+
+    <select id="queryByIds" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from ${table.name}
+        where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

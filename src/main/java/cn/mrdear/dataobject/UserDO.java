@@ -9,7 +9,7 @@ import java.util.Date;
 * table:user
 * comment: ${table.comment}
 * @author dalgen
-* @since Fri Oct 26 22:12:54 CST 2018
+* @since Sun Jan 20 15:30:21 CST 2019
 */
 public class UserDO {
 

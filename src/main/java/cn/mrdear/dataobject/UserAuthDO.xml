@@ -4,15 +4,15 @@
 <mapper namespace="cn.mrdear.dao.UserAuthDAO">
 
     <resultMap id="ALL-RESULTMAP" type="cn.mrdear.dataobject.UserAuthDO">
-        <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
-        <result property="uid" column="uid" javaType="Long" jdbcType="INTEGER"/>
-        <result property="identityType" column="identity_type" javaType="Integer" jdbcType="TINYINT"/>
-        <result property="identifier" column="identifier" javaType="String" jdbcType="VARCHAR"/>
-        <result property="credential" column="credential" javaType="String" jdbcType="VARCHAR"/>
-        <result property="credentialExpire" column="credential_expire" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
-        <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <result property="id" column="id" javaType="Long" jdbcType="INTEGER"/>
+            <result property="uid" column="uid" javaType="Long" jdbcType="INTEGER"/>
+            <result property="identityType" column="identity_type" javaType="Integer" jdbcType="TINYINT"/>
+            <result property="identifier" column="identifier" javaType="String" jdbcType="VARCHAR"/>
+            <result property="credential" column="credential" javaType="String" jdbcType="VARCHAR"/>
+            <result property="credentialExpire" column="credential_expire" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" javaType="Integer" jdbcType="TINYINT"/>
+            <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <result property="gmtUpdate" column="gmt_update" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
 
     </resultMap>
 
@@ -29,23 +29,109 @@
                 gmt_update
     </sql>
 
-    <insert id="insert" parameterType="cn.mrdear.dataobject.UserAuthDO" useGeneratedKeys="true" keyColumn="id"
-            keyProperty="id">
+    <insert id="insertNotNull" parameterType="cn.mrdear.dataobject.UserAuthDO"
+            keyColumn="id" keyProperty="id">
         insert into user_auth
-        <include refid="ALL-COLS"/>
-        values
-        (
-                #{id,jdbcType=INTEGER},
-                #{uid,jdbcType=INTEGER},
-                #{identityType,jdbcType=TINYINT},
-                #{identifier,jdbcType=VARCHAR},
-                #{credential,jdbcType=VARCHAR},
-                #{credentialExpire,jdbcType=TIMESTAMP},
-                #{status,jdbcType=TINYINT},
-                #{gmtCreate,jdbcType=TIMESTAMP},
-                #{gmtUpdate,jdbcType=TIMESTAMP}
-        )
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        id,
+                    </if>
+
+                    <if test="uid != null">
+                        uid,
+                    </if>
+
+                    <if test="identityType != null">
+                        identity_type,
+                    </if>
+
+                    <if test="identifier != null">
+                        identifier,
+                    </if>
+
+                    <if test="credential != null">
+                        credential,
+                    </if>
+
+                    <if test="credentialExpire != null">
+                        credential_expire,
+                    </if>
+
+                    <if test="status != null">
+                        status,
+                    </if>
+
+                    gmt_create,
+
+                    gmt_update,
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test="id != null">
+                        #{id,jdbcType=INTEGER},
+                    </if>
+                    <if test="uid != null">
+                        #{uid,jdbcType=INTEGER},
+                    </if>
+                    <if test="identityType != null">
+                        #{identityType,jdbcType=TINYINT},
+                    </if>
+                    <if test="identifier != null">
+                        #{identifier,jdbcType=VARCHAR},
+                    </if>
+                    <if test="credential != null">
+                        #{credential,jdbcType=VARCHAR},
+                    </if>
+                    <if test="credentialExpire != null">
+                        #{credentialExpire,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="status != null">
+                        #{status,jdbcType=TINYINT},
+                    </if>
+                    now(),
+                    now(),
+        </trim>
     </insert>
 
+    <update id="updateNotNull" parameterType="cn.mrdear.dataobject.UserAuthDO">
+        update user_auth
+        <set>
+                    <if test="uid != null">
+                        uid = #{uid,jdbcType=INTEGER},
+                    </if>
+                    <if test="identityType != null">
+                        identity_type = #{identityType,jdbcType=TINYINT},
+                    </if>
+                    <if test="identifier != null">
+                        identifier = #{identifier,jdbcType=VARCHAR},
+                    </if>
+                    <if test="credential != null">
+                        credential = #{credential,jdbcType=VARCHAR},
+                    </if>
+                    <if test="credentialExpire != null">
+                        credential_expire = #{credentialExpire,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="status != null">
+                        status = #{status,jdbcType=TINYINT},
+                    </if>
+                    gmt_update = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from user_auth
+        where id = #{id}
+    </select>
+
+    <select id="queryByIds" resultMap="ALL-RESULTMAP">
+        select <include refid="ALL-COLS"/>
+        from user_auth
+        where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>
 

@@ -2,6 +2,8 @@ package ${package};
 
 import org.apache.ibatis.annotations.Mapper;
 import ${POJO.fullClassName};
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -13,9 +15,30 @@ public interface ${simpleClassName} {
 
     /**
     * 创建实体
-    * @param insertDO 实体类
-    * @return true成功,主键自动设置到实体中
+    * @param doEntity 实体类
+    * @return 影响行数,主键自动设置到实体中
     */
-    boolean insert(${POJO.simpleClassName} insertDO);
+    int insertNotNull(${POJO.simpleClassName} doEntity);
+
+    /**
+    * 更新实体
+    * @param doEntity 实体类
+    * @return 影响行数
+    */
+    int updateNotNull(${POJO.simpleClassName} doEntity);
+
+    /**
+    * 根据id查找对应的实体
+    * @param id 实体标识
+    * @return 查找结果
+    */
+    ${POJO.simpleClassName} findById(Long id);
+
+    /**
+    * 根据id集合批量查找对应的实体
+    * @param ids 实体id集合
+    * @return 查找结果
+    */
+    List<${POJO.simpleClassName}> queryByIds(Collection<Long> ids);
 
 }
