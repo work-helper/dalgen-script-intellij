@@ -22,7 +22,7 @@
     </sql>
 
     <insert id="insertNotNull" parameterType="${POJO.fullClassName}"
-            keyColumn="id" keyProperty="id">
+            keyColumn="id" keyProperty="id" useGeneratedKeys="true">
         insert into ${table.name}
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #foreach($column in $table.columns)
